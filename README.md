@@ -16,7 +16,7 @@ backup = require('backup')
 
 See [Vis' plugins documentation](https://github.com/martanne/vis/wiki/Plugins).
 
-# Configuring Backup Path and Backup Filenames
+# Configuring backup path and backup filenames
 
 To change where vis writes backups, modify the string
 `backup.directory` and the function `backup.get_fname(backup_dir, filepath)`.
@@ -43,3 +43,8 @@ end
 ```
 
 This should write a copy of your file to `filename~` before saving it. 
+
+# Configuring size limit
+
+Files longer than `backup.byte_limit` bytes are not backed up.
+Default is 1MB.
