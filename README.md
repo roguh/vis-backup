@@ -43,11 +43,3 @@ end
 ```
 
 This should write a copy of your file to `filename~` before saving it. 
-
-## Do not create `backup.directory` on startup
-
-Add this to your `visrc.lua`:
-
-```
-backup.mkdir = false
-```

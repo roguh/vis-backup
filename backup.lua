@@ -33,18 +33,11 @@ end)
 
 
 -- Set defaults
-module.directory = string.format("%s/.vis-backups", os.getenv("HOME"))
+module.directory = os.getenv("HOME") .. "/.vis-backups" 
 
 module.get_fname = module.entire_path
 
 module.time_format = "%H-%M-"
-
-
-module.mkdir = true
-
-if module.mkdir then
-  os.execute("mkdir -p " .. module.directory)
-end
 
 
 return module
