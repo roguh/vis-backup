@@ -13,10 +13,15 @@ backup.entire_path_with_double_percentage_signs_and_timestamp = function(backup_
   return backup_dir .. "/" .. os.date(backup.time_format) .. string.gsub(path, "/", "%%")
 end
 
-
 -- Before saving the file, copy the current contents of the file to a backup file
 vis.events.subscribe(vis.events.FILE_SAVE_PRE, function (file, path)
   if file.size > backup.byte_limit then
+    return
+  end
+
+  -- E.g. when editing stdin as an interactive filter
+  -- `vis -`
+  if path == nil then
     return
   end
 
