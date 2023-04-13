@@ -40,6 +40,15 @@ vis.events.subscribe(vis.events.FILE_SAVE_PRE, function (file, path)
   backup_file:close()
 end)
 
+backup.create_directory = function()
+  os.execute('mkdir -p ' .. backup.directory)
+end
+
+backup.set_directory = function(new_value)
+  backup.directory = new_value
+  backup.create_directory()
+end
+
 
 -- Set defaults
 backup.directory = os.getenv("HOME") .. "/.vis-backups" 
