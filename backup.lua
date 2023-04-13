@@ -2,14 +2,14 @@ local module = {}
 
 
 -- Return the backup path concatenated with the filename, replace / with %
-module.entire_path = function(backup_dir, path)
+module.entire_path_with_double_percentage_signs = function(backup_dir, path)
   return backup_dir .. "/" .. string.gsub(path, "/", "%%")
 end
 
 
 -- Return the backup path concatenated with the filename, replace / with %
 -- and append the current time using time_format
-module.entire_path_with_timestamp = function(backup_dir, path)
+module.entire_path_with_double_percentage_signs_and_timestamp = function(backup_dir, path)
   return backup_dir .. "/" .. os.date(module.time_format) .. string.gsub(path, "/", "%%")
 end
 
@@ -39,7 +39,7 @@ end)
 -- Set defaults
 module.directory = os.getenv("HOME") .. "/.vis-backups" 
 
-module.get_fname = module.entire_path
+module.get_fname = module.entire_path_with_double_percentage_signs
 
 module.time_format = "%H-%M-"
 

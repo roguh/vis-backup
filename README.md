@@ -2,8 +2,11 @@
 
 A vis plugin that makes backups of current files before saving.
 
-Writes backups to `~/.vis-backup`.
-Change the variable `backup.directory` to save them to a different directory.
+Writes backups to `~/.vis-backups`.
+This backup folder must exist and you need permissions to write to it.
+
+Change the variable `backup.directory` to save backups to a different directory.
+See below for configuation examples.
 
 # Installing
 
@@ -14,6 +17,14 @@ this line to your `visrc.lua`:
 backup = require('backup')
 ```
 
+To configure this module, you may modify the `backup` table, for example:
+
+```
+backup = require('backup')
+backup.byte_limit = 500000
+backup.directory = os.getenv("HOME") .. "/.cache/vis-bak"
+```
+
 See [Vis' plugins documentation](https://github.com/martanne/vis/wiki/Plugins).
 
 # Configuring backup path and backup filenames
@@ -21,18 +32,25 @@ See [Vis' plugins documentation](https://github.com/martanne/vis/wiki/Plugins).
 To change where vis writes backups, modify the string
 `backup.directory` and the function `backup.get_fname(backup_dir, filepath)`.
 
-By default, `backup.directory` is set to `~/.vis-backup` and
-`backup.get_fname` is set to `backup.entire_path`.
+Default configuration:
+
+```
+backup.directory = os.getenv("HOME") .. "/.vis-backups" 
+backup.get_fname = backup.entire_path_with_double_percentage_signs
+backup.time_format = "%H-%M-"
+-- 1MB
+backup.byte_limit = 1000000
+```
 
 ## Save to another directory (with timestamp)
 
 Add this to your `visrc.lua`:
 
 ```
-backup.get_fname = backup.entire_path_with_timestamp
+backup.get_fname = backup.entire_path_with_double_percentage_signs_and_timestamp
 ```
 
-## Save to current directory (Emacs/Vim style)
+## Save to current directory with a tilde at the end (Emacs/Vim style)
 
 Add this to your `visrc.lua`:
 
