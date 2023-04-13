@@ -5,24 +5,51 @@ A vis plugin that makes backups of current files before saving.
 Writes backups to `~/.vis-backups`.
 This backup folder must exist and you need permissions to write to it.
 
-Change the variable `backup.directory` to save backups to a different directory.
+Call `backup.set_directory(path)` to save backups to a different directory.
 See below for configuation examples.
 
-# Installing
+# Installing this vis plugin
 
-Copy `backup.lua` to somewhere `visrc.lua` can load it, then add
-this line to your `visrc.lua`:
+Copy `backup.lua` next to `visrc.lua`, then add this line to your `visrc.lua`:
 
-```
+```lua
 backup = require('backup')
+```
+
+```sh
+$ ls
+visrc.lua backup.lua
+```
+
+`visrc.lua` can be found at `XDG_CONFIG_HOME/vis` or `$HOME/.config/vis`.
+If not set, use `:help` for instructions on how to initialize `vis`.
+
+You may also install it in Lua's path.
+See documentation about the [`require` function](https://www.lua.org/pil/8.1.html).
+
+If the backup plugin is found in another directory, add the path:
+
+```lua
+backup = require('plugins-directory/vis-backup/backup')
+-- Call this if the backup directory doesn't exist
+backup.set_directory(os.getenv('HOME') .. '/.cache/bak')
+```
+
+```sh
+$ tree
+.
+├── vis-backup
+│   ├── README.md
+│   └── backup.lua
+└── visrc.lua
 ```
 
 To configure this module, you may modify the `backup` table, for example:
 
-```
+```lua
 backup = require('backup')
 backup.byte_limit = 500000
-backup.directory = os.getenv("HOME") .. "/.cache/vis-bak"
+backup.set_directory(getenv('HOME') .. '/.cache/vis-bak')
 ```
 
 See [Vis' plugins documentation](https://github.com/martanne/vis/wiki/Plugins).
@@ -34,10 +61,10 @@ To change where vis writes backups, modify the string
 
 Default configuration:
 
-```
-backup.directory = os.getenv("HOME") .. "/.vis-backups" 
+```lua
+backup.directory = os.getenv('HOME') .. '/.vis-backups' 
 backup.get_fname = backup.entire_path_with_double_percentage_signs
-backup.time_format = "%H-%M-"
+backup.time_format = '%H-%M-'
 -- 1MB
 backup.byte_limit = 1000000
 ```
@@ -46,7 +73,7 @@ backup.byte_limit = 1000000
 
 Add this to your `visrc.lua`:
 
-```
+```lua
 backup.get_fname = backup.entire_path_with_double_percentage_signs_and_timestamp
 ```
 
@@ -54,15 +81,17 @@ backup.get_fname = backup.entire_path_with_double_percentage_signs_and_timestamp
 
 Add this to your `visrc.lua`:
 
-```
+```lua
 backup.get_fname = function(_, filepath)
-  return filepath .. "~"
+  return filepath .. '~'
 end
 ```
 
+`filepath` will not be `nil`.
+
 This should write a copy of your file to `filename~` before saving it. 
 
-# Configuring size limit
+## Configuring size limit
 
 Files longer than `backup.byte_limit` bytes are not backed up.
 Default is 1MB.
