@@ -8,26 +8,35 @@ This backup folder must exist and you need permissions to write to it.
 Call `backup.set_directory(path)` to save backups to a different directory.
 See below for configuation examples.
 
-# Installing this vis plugin
+## Installing this vis plugin
 
-Copy `backup.lua` next to `visrc.lua`, then add this line to your `visrc.lua`:
+Download the repository. One way is with the git CLI:
 
-```lua
-backup = require('backup')
 ```
+git clone https://github.com/roguh/vis-backup
+```
+
+Ensure the directory `vis-backup/` is next to `visrc.lua`.
 
 ```sh
 $ ls
-visrc.lua backup.lua
+visrc.lua vis-backup/
 ```
+
+Add this line to your `visrc.lua` to load the `backup.lua` file:
+
+```lua
+require('vis-backup/backup')
+```
+
+It may be simpler to copy the `backup.lua` file adjacent to `visrc.lua` and run `require('backup')`.
 
 `visrc.lua` can be found at `XDG_CONFIG_HOME/vis` or `$HOME/.config/vis`.
 If not set, use `:help` for instructions on how to initialize `vis`.
-
 You may also install it in Lua's path.
 See documentation about the [`require` function](https://www.lua.org/pil/8.1.html).
 
-If the backup plugin is found in another directory, add the path:
+If the backup.lua file is found in another directory, use the different path:
 
 ```lua
 backup = require('plugins-directory/vis-backup/backup')
@@ -44,6 +53,8 @@ $ tree
 └── visrc.lua
 ```
 
+## Configuration
+
 To configure this module, you may modify the `backup` table, for example:
 
 ```lua
@@ -52,17 +63,12 @@ backup.byte_limit = 500000
 backup.set_directory(getenv('HOME') .. '/.cache/vis-bak')
 ```
 
-See [Vis' plugins documentation](https://github.com/martanne/vis/wiki/Plugins).
-
-# Configuring backup path and backup filenames
-
-To change where vis writes backups, modify the string
-`backup.directory` and the function `backup.get_fname(backup_dir, filepath)`.
+## Configuring backup path and backup filenames
 
 Default configuration:
 
 ```lua
-backup.directory = os.getenv('HOME') .. '/.vis-backups' 
+backup.set_directory(os.getenv('HOME') .. '/.vis-backups')
 backup.get_fname = backup.entire_path_with_double_percentage_signs
 backup.time_format = '%H-%M-'
 -- 1MB
@@ -95,3 +101,7 @@ This should write a copy of your file to `filename~` before saving it.
 
 Files longer than `backup.byte_limit` bytes are not backed up.
 Default is 1MB.
+
+## Other plugins
+
+See [Vis' plugins documentation](https://github.com/martanne/vis/wiki/Plugins).
